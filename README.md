@@ -13,7 +13,7 @@ test_problem_function()
 And that should return some information on where the stack traces diverge. Currently, it returns the
 two initial function calls that were different in the traces (*which in hindsight, isn't too useful*).
 
-The `test.py` file has a test case, I'm currently using to check my code. Since the function being tested is `solve` in sympy, I need to `clear_cache()` in `divergence.py`.Consequently, if you're testing a function that might have this issue you will need to pass in the associated clear cache function and corresponding library. I can't think of a better way to do this for the moment.   
+The `test.py` file has a test case, I'm currently using to check my code. Since the function being tested is `solve` in sympy, which caches certain function results for efficiency, I need to `clear_cache()` in `divergence.py`. Consequently, if you're testing a function that might have this issue you will need to pass in the associated clear cache function and corresponding library. I can't think of a better way to do this for the moment.   
 
 As a remark, truly capturing trace similarity is a nontrivial task: [example](https://arxiv.org/pdf/2009.12590.pdf).
 
