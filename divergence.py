@@ -107,8 +107,8 @@ def niceOutput(instance, *args):
                 s_j = refineString(j)
                 data.append([s_i, s_j])
                 if s_i == refineString(keys1[index]):
-                    patterns.append((s_i, lambda text: style(text, fg="red")))
-                    patterns.append((s_j, lambda text: style(text, fg="red")))
+                    patterns.append((s_i, lambda text: style(text, fg="green")))
+                    patterns.append((s_j, lambda text: style(text, fg="green")))
             for k in keys2[index + 1 : index + 3]:
                 s_k = refineString(k)
                 data.append(["", s_k])
@@ -126,8 +126,8 @@ def niceOutput(instance, *args):
                 s_j = refineString(j)
                 data.append([s_i, s_j])
                 if s_i == refineString(keys1[index]):
-                    patterns.append((s_i, lambda text: style(text, fg="red")))
-                    patterns.append((s_j, lambda text: style(text, fg="red")))
+                    patterns.append((s_i, lambda text: style(text, fg="green")))
+                    patterns.append((s_j, lambda text: style(text, fg="green")))
             for k in keys1[index + 1 : index + 3]:
                 s_k = refineString(k)
                 data.append([s_k, ""])
