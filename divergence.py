@@ -17,37 +17,29 @@ class Trace(trace.Trace):
 def diverge(arguments):
     def decorator(func):
         def wrapper():
-            stack_traces = []
-            inputs = arguments[0:2]
-            need_clearance = clearance(arguments)
+            stack_traces = {}
+            inputs = {k: arguments[k] for k in ("arg1", "arg2")}
+            need_clearance = "function" in arguments.keys()
             tracer = Trace()
             if need_clearance:
-                module_name = arguments[2]
-                cache = importing(module_name)
-                clear = getattr(cache, arguments[3])
-            for input in inputs:
-                tracer.runfunc(func, *input)
+                module = arguments["module"]
+                cache = importing(module)
+                clear = getattr(cache, arguments["function"])
+            for k, v in inputs.items():
+                tracer.runfunc(func, *v)
                 r = tracer.results()
-                stack_traces.append(r.calledfuncs)
+                stack_traces[k] = r.calledfuncs
                 if need_clearance:
                     clear()
-            comparison((inputs[0], stack_traces[0]), (inputs[1], stack_traces[1]))
+            comparison(
+                (arguments["arg1"], stack_traces["arg1"]),
+                (arguments["arg2"], stack_traces["arg2"]),
+            )
             return None
 
         return wrapper
 
     return decorator
-
-
-# will need to clear cache?
-def clearance(arguments):
-    if len(arguments) > 2:
-        if len(arguments) > 4:
-            raise Exception("you need to have the module AND function name")
-        else:
-            return True
-    else:
-        return False
 
 
 # import necessary module for clearing the cache
@@ -59,25 +51,24 @@ def importing(name):
     return mod
 
 
-# inputting the same argument to diverge might return slightly different size
-# for callfuncs. Normalization is difficult. so for the moment we leave it as is.
-def comparison(arg1, arg2):
-    input1, trace1 = arg1[0], arg1[1]
-    input2, trace2 = arg2[0], arg2[1]
+# compare traces.
+def comparison(tup1, tup2):
+    input1, trace1 = tup1[0], tup1[1]
+    input2, trace2 = tup2[0], tup2[1]
     keys1 = list(trace1.keys())
     keys2 = list(trace2.keys())
     for k1, k2 in zip(keys1, keys2):
         if k1 != k2:
-            return niceOutput(0, keys1, keys2, keys1.index(k1), input1, input2)
+            return terminalFormatting(0, keys1, keys2, keys1.index(k1), input1, input2)
     if len(keys1) < len(keys2):
-        return niceOutput(1, keys1, keys2, input1, input2)
+        return terminalFormatting(1, keys1, keys2, input1, input2)
     elif len(keys1) > len(keys2):
-        return niceOutput(2, keys1, keys2, input1, input2)
-    return niceOutput(3, input1, input2)
+        return terminalFormatting(2, keys1, keys2, input1, input2)
+    return terminalFormatting(3, input1, input2)
 
 
-# construct the terminal formatting for proper formatting
-def niceOutput(instance, *args):
+# construct the terminal formatting
+def terminalFormatting(instance, *args):
     keys1 = args[0]
     keys2 = args[1]
     match instance:

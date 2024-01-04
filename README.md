@@ -1,10 +1,11 @@
 This is meant to be a decorator called `diverge`, that returns the first instance where two inputs have divergent stack traces for a specific function (or if they agree up to the length of the smaller stack trace, it returns the starting point where the larger stack trace continues). So it would look something like:
 
 ```
-import divergence
+from divergence import diverge
 
-arguments = [arg1, arg2]
-@divergence.diverge(arguments)
+arguments = {"arg1": <argument 1>, "arg2": <argument 2>}
+
+@diverge(arguments)
 def test_problem_function(arg)
     return problem_function(arg)
 
