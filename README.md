@@ -27,7 +27,5 @@ The `test.py` file is testing  SymPy's `solve` function, which caches certain fu
 
 As a remark, truly capturing trace similarity is a nontrivial task: [example](https://arxiv.org/pdf/2009.12590.pdf).
 
-This is a tool i've always wanted when debugging in `SymPy` or any math heavy libraries where inputs to the same function might send you into wildly different areas of the code base (but that is not clear apriori). Usually, the thing to do in this case, is to run both input instances simultaneously then step through each in parallel, but this can be arduous (and super easy to miss the diverging point). I need to rethink the experience I'm trying to recreate and if side-by-side differences in stack truly captures it. 
-
 
 NOTE: This will crap the bed on testing recursive functions.
