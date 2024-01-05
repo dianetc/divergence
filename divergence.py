@@ -65,6 +65,9 @@ def comparison(info_dict):
     arg2, trace2 = info_dict["info2"]["arg2"], info_dict["info2"]["trace2"]
     keys1 = list(trace1.keys())
     keys2 = list(trace2.keys())
+    print(keys1)
+    print("\n")
+    print(keys2)
     for k1, k2 in zip(keys1, keys2):
         if k1 != k2:
             return terminalFormatting(

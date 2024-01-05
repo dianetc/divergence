@@ -1,7 +1,5 @@
 from sympy import *
 from sympy.solvers import solve
-
-# from sympy.integrals.manualintegrate import manualintegrate
 from divergence import diverge
 
 
