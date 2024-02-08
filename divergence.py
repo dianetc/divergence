@@ -70,27 +70,28 @@ def comparison(info_dict):
     for k1, k2 in zip(keys1, keys2):
         if k1 != k2:
             return terminalFormatting(
-                0,
+                occurrence.DIFFERENT_KEYS,
                 {"arg1": arg1, "arg2": arg2},
                 {"keys1": keys1, "keys2": keys2},
                 {"index": keys1.index(k1)},
             )
     if len(keys1) != len(keys2):
         return terminalFormatting(
-            1,
+            occurrence.DIFFERENT_LENGTHS,
             {"arg1": arg1, "arg2": arg2},
             {"keys1": keys1, "keys2": keys2},
             {"index": min(len(keys1) - 1, len(keys2) - 1)},
         )
-    return terminalFormatting(2, {"arg1": arg1, "arg2": arg2})
+    return terminalFormatting(occurrence.NO_DIVERGENCE, {"arg1": arg1, "arg2": arg2})
 
 
 # construct the terminal formatting
 def terminalFormatting(instance, *args):
     arg1 = args[0]["arg1"]
     arg2 = args[0]["arg2"]
+
     match instance:
-        case 0:
+        case occurrence.DIFFERENT_KEYS:
             keys1 = args[1]["keys1"]
             keys2 = args[1]["keys2"]
             index = args[2]["index"]
@@ -105,7 +106,7 @@ def terminalFormatting(instance, *args):
                     patterns.append((s_j, lambda text: style(text, fg="red")))
             table = columnar(data, headers=headers, patterns=patterns)
             print(table)
-        case 1:
+        case occurrence.DIFFERENT_LENGTHS:
             keys1 = args[1]["keys1"]
             keys2 = args[1]["keys2"]
             index = args[2]["index"]
@@ -126,9 +127,13 @@ def terminalFormatting(instance, *args):
                 )
             table = columnar(data, headers=headers, patterns=patterns)
             print(table)
-        case 2:
+        case occurrence.NO_DIVERGENCE:
             print(f"{bcolors.OKGREEN}{arg1} and {arg2} do not diverge{bcolors.ENDC}")
 
+class occurrence:
+    DIFFERENT_KEYS = 0
+    DIFFERENT_LENGTHS = 1
+    NO_DIVERGENCE = 2
 
 # process ouputs from collectfunc by removing unneccesary jargon
 def refineString(string):
