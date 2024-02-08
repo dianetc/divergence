@@ -27,5 +27,4 @@ The `test.py` file is testing  SymPy's `solve` function, which caches certain fu
 
 As a remark, truly capturing trace similarity is a nontrivial task: [example](https://arxiv.org/pdf/2009.12590.pdf).
 
-
-NOTE: This will crap the bed on testing recursive functions.
+NOTE: This works on Python>=3.10.0. I recommend using pyenv to manage python versions!
