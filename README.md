@@ -1,4 +1,8 @@
-This is meant to be a decorator called `diverge`, that returns the first instance where two inputs have divergent stack traces for a specific function (or if they agree up to the length of the smaller stack trace, it returns the starting point where the larger stack trace continues). So it would look something like:
+This is meant to be a decorator called `diverge`, that returns the first instance where two inputs have divergent stack traces for a specific function.
+
+If they agree up to the length of the smaller stack trace, it returns the starting point where the larger stack trace continues.
+
+Using divergence, looks something like:
 
 ```
 from divergence import diverge
@@ -12,7 +16,7 @@ def test_problem_function(arg)
 test_problem_function()
 ```
 
-And that should return some information on where the stack traces diverge. Currently, it returns the
+The code above should return some information on where the stack traces diverge. Currently, diverge returns the
 two initial function calls that were different in the traces (*which in hindsight, isn't too useful*).
 
 The output of the current `test.py` file is below:
@@ -20,8 +24,7 @@ The output of the current `test.py` file is below:
 ![test_example](https://github.com/dianetc/divergence/assets/46408633/b1971789-4927-4aa4-a40e-e977bde8115b)
 
 
-The right hand stack trace was larger and they agreed for the entirety of the stack trace of the left hand column. Consequently,
-it shows when the right hand side continues. 
+The right hand stack trace was larger and they agreed for the entirety of the stack trace of the left handed one.
 
 The `test.py` file is testing  SymPy's `solve` function, which caches certain function results for efficiency. Consequenty, I needed to `clear_cache()` in `divergence.py`. So, if you're testing a function that might have this issue you will need to pass in the associated clear cache function and corresponding library. I can't think of a better way to do this for the moment.   
 
